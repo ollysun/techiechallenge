@@ -1,0 +1,4 @@
+SELECT DISTINCT country
+FROM games
+GROUP BY country
+HAVING COUNT(DISTINCT year) = (SELECT COUNT(DISTINCT year) FROM games);
