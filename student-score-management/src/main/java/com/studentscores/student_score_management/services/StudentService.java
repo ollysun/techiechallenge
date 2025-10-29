@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.toList;
+
 @Service
 @Transactional
 public class StudentService {
@@ -98,7 +100,7 @@ public class StudentService {
         List<Student> students = studentRepository.findAll();
         return students.stream()
                 .map(this::convertToReportDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
     
     @Transactional(readOnly = true)
@@ -113,7 +115,7 @@ public class StudentService {
         
         List<StudentReportDTO> reports = studentPage.getContent().stream()
                 .map(this::convertToReportDTO)
-                .collect(Collectors.toList());
+                .toList();
         
         return new PaginatedResponse<>(
             reports,
@@ -140,7 +142,7 @@ public class StudentService {
         
         List<Integer> scoreValues = scores.stream()
                 .map(SubjectScore::getScore)
-                .collect(Collectors.toList());
+                .toList();
         
         report.setSubjectScores(subjectScores);
         report.setMeanScore(statisticsCalculator.calculateMean(scoreValues));
