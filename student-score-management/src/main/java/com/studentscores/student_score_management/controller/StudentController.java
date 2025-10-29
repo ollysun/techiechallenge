@@ -1,4 +1,3 @@
-// StudentController.java
 package com.studentscores.student_score_management.controller;
 
 
@@ -34,7 +33,7 @@ public class StudentController {
     public StudentController(StudentService studentService) {
         this.studentService = studentService;
     }
-    
+
     @Operation(summary = "Create a new student with scores")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "201", description = "Student created successfully"),
@@ -42,7 +41,7 @@ public class StudentController {
     })
     @PostMapping
     public ResponseEntity<Student> createStudent(
-            @Parameter(description = "Student score data") 
+            @Parameter(description = "Student score data")
             @Valid @RequestBody StudentScoreRequest request) {
         Student student = studentService.createStudentWithScores(request);
         return new ResponseEntity<>(student, HttpStatus.CREATED);

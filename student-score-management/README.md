@@ -82,3 +82,8 @@ A comprehensive Spring Boot web application for managing student scores across 5
    ```bash
    git clone <repository-url>
    cd student-scores-app
+   
+2, **Build and run with Docker Compose**:
+   ```bash
+   docker-compose up --build
+   ```

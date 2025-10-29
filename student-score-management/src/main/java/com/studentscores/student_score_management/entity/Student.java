@@ -1,5 +1,7 @@
 package com.studentscores.student_score_management.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
@@ -28,6 +30,7 @@ public class Student {
     private String studentId;
 
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference // This side will be serialized
     private List<SubjectScore> scores = new ArrayList<>();
 
     @Column(name = "created_at")

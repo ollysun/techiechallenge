@@ -1,5 +1,6 @@
 package com.studentscores.student_score_management.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -21,6 +22,7 @@ public class SubjectScore {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "student_id", nullable = false)
+    @JsonBackReference // This side won't be serialized
     private Student student;
 
     @NotNull(message = "Subject name is required")

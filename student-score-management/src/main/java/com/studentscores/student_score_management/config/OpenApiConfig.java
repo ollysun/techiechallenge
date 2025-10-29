@@ -1,4 +1,3 @@
-// OpenApiConfig.java
 package com.studentscores.student_score_management.config;
 
 import io.swagger.v3.oas.models.OpenAPI;

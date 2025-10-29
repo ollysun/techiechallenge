@@ -1,4 +1,3 @@
-// StudentService.java
 package com.studentscores.student_score_management.services;
 
 
@@ -7,6 +6,8 @@ import com.studentscores.student_score_management.dto.StudentReportDTO;
 import com.studentscores.student_score_management.dto.StudentScoreRequest;
 import com.studentscores.student_score_management.entity.Student;
 import com.studentscores.student_score_management.entity.SubjectScore;
+import com.studentscores.student_score_management.exception.ResourceNotFoundException;
+import com.studentscores.student_score_management.exception.ValidationException;
 import com.studentscores.student_score_management.repository.StudentRepository;
 import com.studentscores.student_score_management.repository.SubjectScoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,30 +37,30 @@ public class StudentService {
         this.subjectScoreRepository = subjectScoreRepository;
         this.statisticsCalculator = statisticsCalculator;
     }
-    
+
     public Student createStudentWithScores(StudentScoreRequest request) {
         validateScores(request.getScores());
-        
+
         Student student = new Student(request.getStudentName());
         student = studentRepository.save(student);
-        
+
         List<SubjectScore> subjectScores = new ArrayList<>();
         for (Map.Entry<String, Integer> entry : request.getScores().entrySet()) {
             SubjectScore subjectScore = new SubjectScore(student, entry.getKey(), entry.getValue());
             subjectScores.add(subjectScore);
         }
-        
+
         subjectScoreRepository.saveAll(subjectScores);
         student.setScores(subjectScores);
-        
+
         return student;
     }
-    
+
     private void validateScores(Map<String, Integer> scores) {
         if (scores == null || scores.size() != 5) {
             throw new ValidationException("Exactly 5 subjects are required");
         }
-        
+
         for (Map.Entry<String, Integer> entry : scores.entrySet()) {
             if (entry.getKey() == null || entry.getKey().trim().isEmpty()) {
                 throw new ValidationException("Subject name cannot be empty");
@@ -79,13 +80,13 @@ public class StudentService {
     public Page<Student> searchStudentsByName(String name, Pageable pageable) {
         return studentRepository.searchByName(name, pageable);
     }
-    
+
     @Transactional(readOnly = true)
     public Student getStudentById(Long id) {
         return studentRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Student not found with id: " + id));
     }
-    
+
     @Transactional(readOnly = true)
     public Student getStudentByStudentId(String studentId) {
         return studentRepository.findByStudentId(studentId)

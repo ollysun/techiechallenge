@@ -47,9 +47,16 @@ public class StatisticsCalculator {
         long maxFrequency = frequencyMap.values().stream()
                 .max(Long::compare)
                 .orElse(0L);
-        
-        if (maxFrequency <= 1) {
-            return null; // No mode if all frequencies are 1
+
+        // Return null only if all frequencies are 1 (no mode)
+        // Otherwise return the mode even if it appears only once but is the most frequent
+        if (maxFrequency <= 1 && frequencyMap.size() > 1) {
+            return null; // No mode if all values are unique
+        }
+
+        // If all values are the same, return that value as mode
+        if (frequencyMap.size() == 1) {
+            return scores.get(0);
         }
         
         return frequencyMap.entrySet().stream()

@@ -1,4 +1,3 @@
-// StatisticsCalculatorTest.java
 package com.studentscores.student_score_management.service;
 
 import com.studentscores.student_score_management.services.StatisticsCalculator;
