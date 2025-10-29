@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: student_scores_db
+    environment:
+      POSTGRES_DB: student_scores
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - student-network
+
+  app:
+    build: .
+    container_name: student_score_management
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/student_scores
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    ports:
+      - "8585:8585"
+    depends_on:
+      - postgres
+    networks:
+      - student-network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+
+networks:
+  student-network:
+    driver: bridge
