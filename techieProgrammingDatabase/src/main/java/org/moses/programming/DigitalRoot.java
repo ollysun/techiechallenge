@@ -1,6 +1,5 @@
 package org.moses.programming;
 
-// DigitalRoot.java
 public class DigitalRoot {
     
     /**
